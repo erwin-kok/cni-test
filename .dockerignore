@@ -1,0 +1,9 @@
+*
+
+!/Makefile*
+!/go.sum
+!/go.mod
+!/Dockerfile
+
+!/.git
+!/cni-plugin

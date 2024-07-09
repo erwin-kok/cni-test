@@ -1,0 +1,18 @@
+GIT_VERSION:=$(shell git describe --tags --dirty --always --abbrev=12)
+ARCHES=amd64 arm64
+VALIDARCHES=ARCHES
+BUILDARCH ?= $(shell uname -m)
+BUILDOS ?= $(shell uname -s | tr A-Z a-z)
+
+ifeq ($(BUILDARCH),aarch64)
+	BUILDARCH=arm64
+endif
+ifeq ($(BUILDARCH),x86_64)
+	BUILDARCH=amd64
+endif
+
+ARCH ?= $(BUILDARCH)
+
+
+RELATIVE_DIR := $(shell echo $(realpath .) | sed "s;$(ROOT_DIR)[/]*;;")
+
