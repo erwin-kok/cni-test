@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := build
 
-SUBDIRS := cni-plugin
+SUBDIRS := cni-plugin cnitest-node
 
 build: $(SUBDIRS)
 	@echo "Build finished."
@@ -10,6 +10,9 @@ $(SUBDIRS): force
 
 image: .buildx_builder
 	scripts/build-image.sh linux/amd64,linux/arm64 cnitest "$$(cat .buildx_builder)"
+
+kind: image
+	@kind load docker-image cnitest --name cnitest-kind
 
 clean:
 	-@for i in $(SUBDIRS); do $(MAKE) $(SUBMAKEOPTS) -C $$i clean; done

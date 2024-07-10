@@ -21,6 +21,8 @@ FROM alpine:3.14 AS release
 ARG TARGETOS
 ARG TARGETARCH
 
+RUN apk add --no-cache bash
+
 COPY --from=builder /tmp/install/${TARGETOS}/${TARGETARCH} /
 
-CMD ["/opt/cni/bin/test-cni"]
+CMD ["/usr/bin/cnitest-node"]

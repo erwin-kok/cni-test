@@ -1,6 +1,6 @@
 include ../Makefile.defs
 
-TARGET := ./bin/test-cni
+TARGET := ./bin/cnitest-node
 LDFLAGS = -X main.VERSION=$(GIT_VERSION)
 
 .PHONY: all $(TARGET) clean
@@ -17,7 +17,5 @@ clean:
 	@go clean
 
 install:
-	@install -m 0755 -d $(DESTDIR)/etc/cni/net.d
-	@install -m 0644 test-cni.conf $(DESTDIR)/etc/cni/net.d
-	@install -m 0755 -d $(DESTDIR)/opt/cni/bin
-	@install -m 0755 $(TARGET) $(DESTDIR)/opt/cni/bin
+	@install -m 0755 -d $(DESTDIR)/usr/bin
+	@install -m 0755 $(TARGET) $(DESTDIR)/usr/bin

@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"time"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"os"
 )
 
 // VERSION is filled out during the build process (using git describe output)
@@ -15,7 +17,7 @@ func createLogger() *zap.Logger {
 	stdout := zapcore.AddSync(os.Stdout)
 
 	file := zapcore.AddSync(&lumberjack.Logger{
-		Filename:   "/var/log/test-cni-xxx.log",
+		Filename:   "/var/log/test-cni-yyy.log",
 		MaxSize:    10, // megabytes
 		MaxBackups: 3,
 		MaxAge:     7, // days
@@ -45,11 +47,13 @@ func main() {
 	logger := createLogger()
 	defer logger.Sync()
 
-	logger.Info(fmt.Sprintf("CNI-Test cni-plugin, version: %s", VERSION))
+	logger.Info(fmt.Sprintf("CNI-Test node: %s", VERSION))
 
 	logger.Warn("User account is nearing the storage limit",
 		zap.String("username", "john.doe"),
 		zap.Float64("storageUsed", 4.5),
 		zap.Float64("storageLimit", 5.0),
 	)
+
+	time.Sleep(time.Duration(1) * time.Hour)
 }
