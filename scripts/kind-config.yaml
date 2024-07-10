@@ -1,0 +1,50 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: "cnitest-kind"
+
+containerdConfigPatches:
+  - |-
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = "/etc/containerd/certs.d"
+
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 2345
+        hostPort: 23401
+        listenAddress: 127.0.0.1
+        protocol: TCP
+  - role: worker
+    extraPortMappings:
+      - containerPort: 2345
+        hostPort: 23411
+        listenAddress: 127.0.0.1
+        protocol: TCP
+  - role: worker
+    extraPortMappings:
+      - containerPort: 2345
+        hostPort: 23412
+        listenAddress: 127.0.0.1
+        protocol: TCP
+  - role: worker
+    extraPortMappings:
+      - containerPort: 2345
+        hostPort: 23413
+        listenAddress: 127.0.0.1
+        protocol: TCP
+
+networking:
+  disableDefaultCNI: true
+  kubeProxyMode: iptables
+  ipFamily: ipv4
+  apiServerAddress: 127.0.0.1
+  apiServerPort: 0
+
+kubeadmConfigPatches:
+  - |
+    kind: ClusterConfiguration
+    metadata:
+      name: config
+    apiServer:
+      extraArgs:
+        "v": "3"
